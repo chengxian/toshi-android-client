@@ -18,6 +18,6 @@
 package com.toshi.model.network.dapp
 
 data class DappSections(
-        val sections: List<DappSection> = emptyList(),
+        val sections: MutableList<DappSection> = mutableListOf(),
         val categories: Map<Int, String> = emptyMap()
 )

@@ -373,4 +373,5 @@
     <string name="invalid_url">Invalid url</string>
     <string name="value_with_space_at_end">%s\u0020</string>
     <string name="web_view_disabled">Not supported</string>
+    <string name="coinbase_dapp_description">Buy ETH from Coinbase and send it directly to your Toshi wallet. Note: Please use your debit card or credit card for instant ETH transfers. ETH purchased via bank transfer or ACH is subject to a multi-day hold on withdrawals.</string>
 </resources>

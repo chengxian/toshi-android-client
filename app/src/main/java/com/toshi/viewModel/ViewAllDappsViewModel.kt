@@ -56,7 +56,7 @@ class ViewAllDappsViewModel(private val intent: Intent) : ViewModel() {
     private fun getCategoryId() = intent.getIntExtra(CATEGORY_ID, -1)
 
     private fun getInitialDapps() {
-        val sub = getDappsWithOffset(0)
+        val sub = getDappsWithOffset(emptyList())
                 .doOnSuccess { updateInitialPagingState(it) }
                 .map { it.results }
                 .doOnSuccess { setCategoryName(it, getCategoryId()) }
@@ -70,7 +70,7 @@ class ViewAllDappsViewModel(private val intent: Intent) : ViewModel() {
     }
 
     private fun getInitialDappsInCategory(categoryId: Int) {
-        val sub = getDappsInCategoryWithOffset(categoryId, 0)
+        val sub = getDappsInCategoryWithOffset(categoryId, emptyList())
                 .doOnSuccess { updateInitialPagingState(it) }
                 .map { it.results }
                 .doOnSuccess { setCategoryName(it, getCategoryId()) }
@@ -89,7 +89,7 @@ class ViewAllDappsViewModel(private val intent: Intent) : ViewModel() {
     }
 
     private fun getDapps() {
-        val sub = getDappsWithOffset(getOffset())
+        val sub = getDappsWithOffset(dapps.value ?: emptyList())
                 .doOnSuccess { updatePagingState(it) }
                 .map { it.results.dapps }
                 .subscribe(
@@ -100,9 +100,9 @@ class ViewAllDappsViewModel(private val intent: Intent) : ViewModel() {
         subscriptions.add(sub)
     }
 
-    private fun getDappsWithOffset(offset: Int): Single<DappSearchResult> {
+    private fun getDappsWithOffset(currentDapps: List<Dapp>): Single<DappSearchResult> {
         return dappsManager
-                .getAllDappsWithOffset(offset)
+                .getAllDappsWithOffset(currentDapps)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { loadingState = LoadingState.LOADING }
                 .doAfterTerminate { loadingState = LoadingState.NOT_LOADING }
@@ -110,7 +110,7 @@ class ViewAllDappsViewModel(private val intent: Intent) : ViewModel() {
     }
 
     private fun getDappsInCategory(categoryId: Int) {
-        val sub = getDappsInCategoryWithOffset(categoryId, getOffset())
+        val sub = getDappsInCategoryWithOffset(categoryId, dapps.value ?: emptyList())
                 .doOnSuccess { updatePagingState(it) }
                 .map { it.results.dapps }
                 .subscribe(
@@ -121,9 +121,9 @@ class ViewAllDappsViewModel(private val intent: Intent) : ViewModel() {
         subscriptions.add(sub)
     }
 
-    private fun getDappsInCategoryWithOffset(categoryId: Int, offset: Int): Single<DappSearchResult> {
+    private fun getDappsInCategoryWithOffset(categoryId: Int, currentDapps: List<Dapp>): Single<DappSearchResult> {
         return dappsManager
-                .getAllDappsInCategoryWithOffset(categoryId, offset)
+                .getAllDappsInCategoryWithOffset(categoryId, currentDapps)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { loadingState = LoadingState.LOADING }
                 .doAfterTerminate { loadingState = LoadingState.NOT_LOADING }
@@ -143,8 +143,6 @@ class ViewAllDappsViewModel(private val intent: Intent) : ViewModel() {
         }
         this.categoryName.value = categoryName
     }
-
-    private fun getOffset() = dapps.value?.size ?: 0
 
     private fun updateInitialPagingState(searchResult: DappSearchResult) {
         pagingState = if (searchResult.limit >= searchResult.total) PagingState.REACHED_END

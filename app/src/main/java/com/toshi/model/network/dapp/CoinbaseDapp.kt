@@ -22,10 +22,10 @@ import com.toshi.manager.dappInjection.DappsInjector.Companion.MARKETPLACE_ID
 data class CoinbaseDapp(
         override val dappId: Long = 1L,
         override val name: String = "Coinbase",
-        override val url: String = "coinbase.com",
-        override val description: String = "Coinbase description",
-        override val icon: String = "https://www.google.no/search?q=coinbase&source=lnms&tbm=isch&sa=X&ved=0ahUKEwit7POL2KzaAhWko1kKHZ-KDqwQ_AUICygC&biw=1280&bih=1342&dpr=1#imgrc=3PYuQeAgJXA25M:",
-        override val cover: String = "https://www.google.no/search?q=coinbase&source=lnms&tbm=isch&sa=X&ved=0ahUKEwit7POL2KzaAhWko1kKHZ-KDqwQ_AUICygC&biw=1280&bih=1342&dpr=1#imgrc=MZaq-qNPB1I-cM:",
+        override val url: String = "",
+        override val description: String = "",
+        override val icon: String = "",
+        override val cover: String = "",
         override val categories: ArrayList<Int> = arrayListOf(MARKETPLACE_ID)
 ) : Dapp(
         dappId = dappId,
